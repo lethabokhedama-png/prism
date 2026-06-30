@@ -28,7 +28,7 @@ export default function ChatPage() {
     } else if (!activeId) {
       startNewConversation()
     }
-  }, [id])
+  }, [id, activeId, setActiveId, startNewConversation])
 
   useEffect(() => {
     if (models.length === 0) setError('no_key')

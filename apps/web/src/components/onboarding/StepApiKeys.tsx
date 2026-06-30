@@ -34,7 +34,7 @@ export default function StepApiKeys({ onNext, onSkip }: Props) {
     fetch('http://localhost:11434/api/tags', { signal: AbortSignal.timeout(2500) })
       .then((r) => setOllamaStatus(r.ok ? 'available' : 'unavailable'))
       .catch(() => setOllamaStatus('unavailable'))
-  }, [])
+  }, [setOllamaStatus])
 
   const updateKey = (id: string, value: string) => {
     setKeys((prev) => ({ ...prev, [id]: { value, status: 'idle' } }))

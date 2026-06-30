@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { listContainerVariants } from '@/styles/motion'
 import type { Message } from '@/types/chat.types'
@@ -11,9 +11,11 @@ interface Props {
 export default function MessageList({ messages }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null)
 
+  const lastContent = messages[messages.length - 1]?.content
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages.length, messages[messages.length - 1]?.content])
+  }, [messages.length, lastContent])
 
   if (messages.length === 0) {
     return (
