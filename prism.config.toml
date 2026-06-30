@@ -6,7 +6,7 @@ version = "0.1.0"
 
 # ── Cascade profiles ──────────────────────────────────────
 [cascade.profiles.quality]
-chain              = ["claude-opus-4-7", "gpt-4o", "gemini-1.5-pro", "groq/llama3-70b", "ollama/llama3"]
+chain              = ["claude-opus-4-7","gpt-4o", "gemini-1.5-pro", "groq/llama3-70b", "ollama/llama3"]
 token_threshold    = 0.82
 cost_cap_usd       = 1.00
 compress_on_handoff= true
