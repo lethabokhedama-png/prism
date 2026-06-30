@@ -1,0 +1,53 @@
+[app]
+name    = "Prism"
+port    = 4000
+mode    = "auto"
+version = "0.1.0"
+
+# ── Cascade profiles ──────────────────────────────────────
+[cascade.profiles.quality]
+chain              = ["claude-opus-4-7", "gpt-4o", "gemini-1.5-pro", "groq/llama3-70b", "ollama/llama3"]
+token_threshold    = 0.82
+cost_cap_usd       = 1.00
+compress_on_handoff= true
+compressor         = "groq/llama3-8b-8192"
+reverse_cascade    = true
+retry_on_error     = 2
+
+[cascade.profiles.cheap]
+chain              = ["groq/llama3-70b", "groq/mixtral-8x7b", "ollama/llama3"]
+token_threshold    = 0.90
+cost_cap_usd       = 0.00
+compress_on_handoff= true
+compressor         = "groq/llama3-8b-8192"
+reverse_cascade    = false
+retry_on_error     = 1
+
+[cascade.profiles.offline]
+chain              = ["ollama/llama3", "ollama/mistral", "ollama/phi3"]
+token_threshold    = 0.90
+cost_cap_usd       = 0.00
+compress_on_handoff= false
+reverse_cascade    = false
+retry_on_error     = 0
+
+# ── Internal services ─────────────────────────────────────
+[services]
+compress_service = "http://localhost:8001"
+
+# ── Data ──────────────────────────────────────────────────
+[data]
+context_db  = "./data/db.json"
+runtime_db  = "./data/prism.db"
+uploads_dir = "./data/uploads"
+
+# ── Redis ─────────────────────────────────────────────────
+[redis]
+url = "redis://localhost:6379"
+
+# ── Feature flags ─────────────────────────────────────────
+[features]
+parallel_models   = false   # only true in Projects on paid
+log_explorer      = false   # paid
+split_view        = false   # paid
+team_mode         = false   # paid

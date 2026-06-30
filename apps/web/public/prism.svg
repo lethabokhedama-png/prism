@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Prism: triangular prism, black fill, white edges -->
+  <polygon points="16,2 30,28 2,28" fill="#000000" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Internal light refraction line -->
+  <line x1="16" y1="2" x2="24" y2="28" stroke="#8B5CF6" stroke-width="1" stroke-opacity="0.8"/>
+  <line x1="16" y1="2" x2="20" y2="28" stroke="#3B82F6" stroke-width="0.75" stroke-opacity="0.6"/>
+</svg>
