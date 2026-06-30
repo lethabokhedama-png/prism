@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component, type ReactNode } from 'react'
 import { RefreshCw, AlertTriangle } from 'lucide-react'
 
 interface Props {
@@ -10,7 +10,7 @@ interface State {
   message: string
 }
 
-export default class AppErrorBoundary extends Component<Props, State> {
+export default class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false, message: '' }
 
   static getDerivedStateFromError(error: Error): State {

@@ -1,4 +1,4 @@
-import React from 'react'
+import { type ReactNode } from 'react'
 import { useAppStore } from '@/store/app.store'
 import Sidebar from './Sidebar'
 import { useEdgeSwipe } from '@/hooks/useGestures'
