@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react'
-import { BrowserRouter, ErrorBoundary, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { useAppStore } from '@/store/app.store'
-import ErrorBoundary from '@/components/layout/ErrorBoundary'
+import AppErrorBoundary from '@/components/layout/AppErrorBoundary'
+
 import OnboardingPage  from '@pages/OnboardingPage'
 import ChatPage        from '@pages/ChatPage'
 import ProjectsPage    from '@pages/ProjectsPage'
 import LibraryPage     from '@pages/LibraryPage'
 import RuntimePage     from '@pages/RuntimePage'
 import SettingsPage    from '@pages/SettingsPage'
+
 import AppShell from '@components/layout/AppShell'
 
 export default function App() {
@@ -24,7 +26,7 @@ export default function App() {
   }, [theme])
 
   return (
-    <ErrorBoundary>
+    <AppErrorBoundary>
       <BrowserRouter>
         <AnimatePresence mode="wait">
           {!hasOnboarded ? (
@@ -44,6 +46,6 @@ export default function App() {
           )}
         </AnimatePresence>
       </BrowserRouter>
-    </ErrorBoundary>
+    </AppErrorBoundary>
   )
 }
