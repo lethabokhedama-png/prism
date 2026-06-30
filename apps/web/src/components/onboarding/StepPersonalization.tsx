@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { listContainerVariants, listItemVariants, springs } from '@/styles/motion'
 import Button from '@/components/ui/Button'
@@ -12,41 +12,52 @@ const USAGES = [
   { id: 'all',      emoji: '⬡',  label: 'All of it', desc: 'Everything Prism offers' },
 ]
 
-export default function StepPersonalization({ onNext }: { onNext: () => void }) {
-  const { userName, setUserName } = useAppStore()
+interface Props {
+  onNext: () => void
+  onSkip: () => void
+}
+
+export default function StepPersonalization({ onNext, onSkip }: Props) {
+  const { userName, setUserName, setPrimaryUsage } = useAppStore()
   const [selected, setSelected] = useState<string[]>([])
 
   const toggle = (id: string) => {
-    if (id === 'all') { setSelected(['all']); return }
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev.filter((x) => x !== 'all'), id]
-    )
+    let next: string[]
+    if (id === 'all') {
+      next = ['all']
+    } else {
+      next = selected.includes(id) ? selected.filter((x) => x !== id) : [...selected.filter((x) => x !== 'all'), id]
+    }
+    setSelected(next)
+    setPrimaryUsage(next)
   }
 
   return (
-    <div className="flex flex-col flex-1 px-6 pt-8 pb-6">
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-        <h2 className="text-[26px] font-bold text-[var(--text-primary)] mb-1">Personalize</h2>
-        <p className="text-[14px] text-[var(--text-tertiary)] mb-6">Tell Prism a bit about you</p>
-      </motion.div>
+    <div className="flex flex-col flex-1 min-h-0">
+      <div className="px-5 pt-4 pb-3 flex-shrink-0">
+        <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+          <h2 className="text-[22px] font-bold text-[var(--text-primary)] mb-0.5">Personalize</h2>
+          <p className="text-[12.5px] text-[var(--text-tertiary)] mb-4">Tell Prism a bit about you</p>
+        </motion.div>
 
-      <div className="mb-6">
-        <label className="text-[12px] font-semibold uppercase tracking-widest text-[var(--text-tertiary)] mb-2 block">Your name</label>
+        <label className="text-[10.5px] font-semibold uppercase tracking-widest text-[var(--text-tertiary)] mb-1.5 block">Your name</label>
         <input
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
-          placeholder="Lethabo"
-          className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-[16px] px-4 py-3 text-[15px] text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] outline-none focus:border-[var(--accent-purple)] transition-colors"
+          placeholder="Your name"
+          className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-[14px] px-3.5 py-2.5 text-[14px] text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] outline-none focus:border-[var(--accent-purple)] transition-colors"
         />
       </div>
 
-      <label className="text-[12px] font-semibold uppercase tracking-widest text-[var(--text-tertiary)] mb-3 block">Primary usage</label>
+      <div className="px-5 flex-shrink-0">
+        <label className="text-[10.5px] font-semibold uppercase tracking-widest text-[var(--text-tertiary)] mb-2 block">Primary usage</label>
+      </div>
 
       <motion.div
         variants={listContainerVariants}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-2 gap-2 flex-1"
+        className="grid grid-cols-2 gap-2 px-5 overflow-y-auto flex-1 content-start pb-2"
       >
         {USAGES.map(({ id, emoji, label, desc }) => {
           const active = selected.includes(id)
@@ -56,23 +67,26 @@ export default function StepPersonalization({ onNext }: { onNext: () => void }) 
               variants={listItemVariants}
               whileTap={{ scale: 0.95, transition: springs.snappy }}
               onClick={() => toggle(id)}
-              className="flex flex-col items-start p-4 rounded-[20px] border text-left transition-all"
+              className="flex flex-col items-start p-3 rounded-[16px] border text-left transition-all"
               style={{
                 background: active ? 'var(--accent-purple-dim)' : 'var(--bg-elevated)',
                 borderColor: active ? 'var(--accent-purple)' : 'var(--border-subtle)',
               }}
             >
-              <span className="text-2xl mb-2">{emoji}</span>
-              <span className="text-[14px] font-semibold text-[var(--text-primary)]">{label}</span>
-              <span className="text-[11px] text-[var(--text-tertiary)] mt-0.5">{desc}</span>
+              <span className="text-xl mb-1.5">{emoji}</span>
+              <span className="text-[13px] font-semibold text-[var(--text-primary)] leading-tight">{label}</span>
+              <span className="text-[10px] text-[var(--text-tertiary)] mt-0.5 leading-tight">{desc}</span>
             </motion.button>
           )
         })}
       </motion.div>
 
-      <div className="mt-6">
-        <Button onClick={onNext} size="lg" fullWidth disabled={!userName.trim()}>
-          Continue
+      <div className="px-5 pt-3 pb-2 flex-shrink-0 flex items-center gap-3 bg-[var(--bg-primary)]">
+        <button onClick={onSkip} className="text-[13px] font-medium text-[var(--text-tertiary)] px-2 py-2">
+          Skip
+        </button>
+        <Button onClick={onNext} size="md" fullWidth disabled={!userName.trim()}>
+          Next
         </Button>
       </div>
     </div>

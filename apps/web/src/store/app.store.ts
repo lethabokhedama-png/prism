@@ -39,6 +39,14 @@ interface AppState {
   setUserName: (n: string) => void
   userAvatar: string | null
   setUserAvatar: (url: string | null) => void
+
+  // Primary usage (selected during onboarding)
+  primaryUsage: string[]
+  setPrimaryUsage: (u: string[]) => void
+
+  // Ollama detection
+  ollamaStatus: 'checking' | 'available' | 'unavailable'
+  setOllamaStatus: (s: 'checking' | 'available' | 'unavailable') => void
 }
 
 export const useAppStore = create<AppState>()(
@@ -70,6 +78,12 @@ export const useAppStore = create<AppState>()(
       setUserName: (n) => set({ userName: n }),
       userAvatar: null,
       setUserAvatar: (url) => set({ userAvatar: url }),
+
+      primaryUsage: [],
+      setPrimaryUsage: (u) => set({ primaryUsage: u }),
+
+      ollamaStatus: 'checking',
+      setOllamaStatus: (s) => set({ ollamaStatus: s }),
     }),
     {
       name: 'prism-app',
@@ -82,6 +96,7 @@ export const useAppStore = create<AppState>()(
         showHealthBar: s.showHealthBar,
         userName:      s.userName,
         userAvatar:    s.userAvatar,
+        primaryUsage:  s.primaryUsage,
       }),
     }
   )

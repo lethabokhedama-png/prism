@@ -1,14 +1,16 @@
-import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion'
 import { pageVariants } from '@/styles/motion'
 import { useChatStore } from '@/store/chat.store'
 import { useRuntimeStore } from '@/store/runtime.store'
+import { useProvidersStore } from '@/store/providers.store'
 import PageHeader from '@/components/layout/PageHeader'
 import MessageList from '@/components/chat/ChatPage/MessageList'
 import InputBar from '@/components/chat/ChatPage/InputBar'
 import ModelSelector from '@/components/chat/ChatPage/ModelSelector'
 import TokenBurnBar from '@/components/chat/ChatPage/TokenBurnBar'
+import ErrorBanner, { type ChatErrorKind } from '@/components/chat/ChatPage/ErrorBanner'
 import type { Attachment, Message } from '@/types/chat.types'
 
 function uid() { return Math.random().toString(36).slice(2, 10) }
@@ -17,6 +19,8 @@ export default function ChatPage() {
   const { id } = useParams()
   const { conversations, activeId, startNewConversation, setActiveId, addMessage, setTitle } = useChatStore()
   const { resetTurn, setStreaming } = useRuntimeStore()
+  const { models } = useProvidersStore()
+  const [error, setError] = useState<ChatErrorKind | null>(null)
 
   useEffect(() => {
     if (id) {
@@ -26,12 +30,22 @@ export default function ChatPage() {
     }
   }, [id])
 
+  useEffect(() => {
+    if (models.length === 0) setError('no_key')
+    else setError(null)
+  }, [models.length])
+
   const conv = conversations.find((c) => c.id === (id ?? activeId))
   const messages = conv?.messages ?? []
 
   const handleSend = async (text: string, attachments: Attachment[]) => {
     const convId = conv?.id
     if (!convId) return
+
+    if (models.length === 0) {
+      setError('no_key')
+      return
+    }
 
     if (messages.length === 0 && text) {
       setTitle(convId, text.slice(0, 40))
@@ -48,8 +62,6 @@ export default function ChatPage() {
     resetTurn()
     setStreaming(true)
 
-    // Gateway call goes here when backend is ready
-    // For now show placeholder streaming
     const assistantId = uid()
     const assistantMsg: Message = {
       id: assistantId,
@@ -70,12 +82,11 @@ export default function ChatPage() {
       exit="exit"
       className="flex flex-col h-full"
     >
-      <PageHeader
-        right={<ModelSelector />}
-      />
+      <PageHeader right={<ModelSelector />} />
+      <ErrorBanner kind={error} onDismiss={() => setError(null)} />
       <MessageList messages={messages} />
       <TokenBurnBar />
-      <InputBar onSend={handleSend} />
+      <InputBar onSend={handleSend} disabled={models.length === 0} />
     </motion.div>
   )
 }

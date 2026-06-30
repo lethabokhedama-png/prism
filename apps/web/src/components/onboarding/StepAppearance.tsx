@@ -14,17 +14,19 @@ export default function StepAppearance({ onNext }: { onNext: () => void }) {
   const { theme, setTheme } = useAppStore()
 
   return (
-    <div className="flex flex-col flex-1 px-6 pt-8 pb-6">
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-        <h2 className="text-[26px] font-bold text-[var(--text-primary)] mb-1">Appearance</h2>
-        <p className="text-[14px] text-[var(--text-tertiary)] mb-8">You can change this any time in settings.</p>
-      </motion.div>
+    <div className="flex flex-col flex-1 min-h-0">
+      <div className="px-5 pt-4 pb-3 flex-shrink-0">
+        <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+          <h2 className="text-[22px] font-bold text-[var(--text-primary)] mb-0.5">Appearance</h2>
+          <p className="text-[12.5px] text-[var(--text-tertiary)]">Change this any time in settings</p>
+        </motion.div>
+      </div>
 
       <motion.div
         variants={listContainerVariants}
         initial="hidden"
         animate="visible"
-        className="space-y-3"
+        className="px-5 space-y-2 flex-1"
       >
         {THEMES.map(({ id, icon: Icon, label, desc }) => {
           const active = theme === id
@@ -34,26 +36,26 @@ export default function StepAppearance({ onNext }: { onNext: () => void }) {
               variants={listItemVariants}
               whileTap={{ scale: 0.97, transition: springs.snappy }}
               onClick={() => setTheme(id)}
-              className="w-full flex items-center gap-4 p-4 rounded-[20px] border text-left transition-all"
+              className="w-full flex items-center gap-3 p-3.5 rounded-[16px] border text-left transition-all"
               style={{
                 background: active ? 'var(--accent-purple-dim)' : 'var(--bg-elevated)',
                 borderColor: active ? 'var(--accent-purple)' : 'var(--border-subtle)',
               }}
             >
-              <div className="w-10 h-10 rounded-[14px] flex items-center justify-center" style={{ background: active ? 'var(--accent-purple)' : 'var(--bg-primary)' }}>
-                <Icon size={18} color={active ? '#fff' : 'var(--text-tertiary)'} />
+              <div className="w-9 h-9 rounded-[12px] flex items-center justify-center flex-shrink-0" style={{ background: active ? 'var(--accent-purple)' : 'var(--bg-primary)' }}>
+                <Icon size={16} color={active ? '#fff' : 'var(--text-tertiary)'} />
               </div>
               <div>
-                <p className="text-[15px] font-semibold text-[var(--text-primary)]">{label}</p>
-                <p className="text-[12px] text-[var(--text-tertiary)]">{desc}</p>
+                <p className="text-[14px] font-semibold text-[var(--text-primary)]">{label}</p>
+                <p className="text-[11px] text-[var(--text-tertiary)]">{desc}</p>
               </div>
             </motion.button>
           )
         })}
       </motion.div>
 
-      <div className="mt-auto pt-8">
-        <Button onClick={onNext} size="lg" fullWidth>Let's go</Button>
+      <div className="px-5 pt-2 pb-2 flex-shrink-0 bg-[var(--bg-primary)]">
+        <Button onClick={onNext} size="md" fullWidth>Let's go</Button>
       </div>
     </div>
   )

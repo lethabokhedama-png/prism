@@ -5,30 +5,30 @@ import Button from '@/components/ui/Button'
 
 export default function StepWelcome({ onNext }: { onNext: () => void }) {
   return (
-    <div className="flex flex-col items-center justify-center flex-1 px-8 text-center">
-      <motion.div variants={prismLogoVariants} initial="hidden" animate="visible" className="mb-8">
-        <PrismLogo size={72} />
+    <div className="flex flex-col items-center justify-center flex-1 px-6 text-center">
+      <motion.div variants={prismLogoVariants} initial="hidden" animate="visible" className="mb-6">
+        <PrismLogo size={56} />
       </motion.div>
 
-      <motion.div variants={fadeVariants} initial="hidden" animate="visible" transition={{ delay: 0.3 }}>
-        <h1 className="text-4xl font-extrabold tracking-tight text-[var(--text-primary)] mb-3">
+      <motion.div variants={fadeVariants} initial="hidden" animate="visible" transition={{ delay: 0.25 }}>
+        <h1 className="text-[32px] font-extrabold tracking-tight text-[var(--text-primary)] mb-2">
           Prism
         </h1>
-        <p className="text-[16px] text-[var(--text-secondary)] leading-relaxed mb-2">
+        <p className="text-[14.5px] text-[var(--text-secondary)] leading-relaxed mb-1">
           Every AI model. One interface.
         </p>
-        <p className="text-[14px] text-[var(--text-tertiary)] leading-relaxed mb-12">
+        <p className="text-[12.5px] text-[var(--text-tertiary)] leading-relaxed mb-9">
           Intelligent cascading. Full transparency. Yours to self-host.
         </p>
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, ...springs.bouncy }}
+        transition={{ delay: 0.4, ...springs.bouncy }}
         className="w-full max-w-xs"
       >
-        <Button onClick={onNext} size="lg" fullWidth>
+        <Button onClick={onNext} size="md" fullWidth>
           Get Started
         </Button>
       </motion.div>
